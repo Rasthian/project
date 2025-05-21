@@ -38,20 +38,31 @@ class FacultyController extends Controller
             'faculty' => $faculty
         ]);
     }
-    public function update(Request $request,$id) {
-        try{
+    public function update(Request $request, $id)
+    {
+        try {
             $request->validate([
                 'name' => 'required|min:3',
                 'date' => 'required'
             ]);
-            
+
             $faculty = Faculty::find($id);
             $faculty->name = $request->name;
             $faculty->date = $request->date;
             $faculty->save();
 
             return redirect()->route('index');
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
 
+    public function destroy($id)// DELETE
+    {
+        try {
+            $faculty = Faculty::find($id);
+            $faculty->delete();
+            return redirect()->route('index');
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }

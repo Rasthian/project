@@ -24,6 +24,7 @@
                     <th>Nama</td>
                     <th>Tanggal Berdiri</td>
                     <th>update</th>
+                    <th>delete</th>
                 </tr>
             </thead>
             <tbody>
@@ -31,9 +32,19 @@
                 <tr>
                     <td>{{$item->name}}</td>
                     <td>{{$item->date}}</td>
-                    <td> <a href="/faculty/update/{{$item->id}}">update</a></td>
+
+                    <td> <a href="/faculty/updateView/{{$item->id}}">update</a></td>
+
+
+                    <td>
+                        <form action="/faculty/{{ $item->id }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this item?');">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit">Delete</button>
+                    </form>
+                    </td>
                 </tr>
-               
+
                 @endforeach
             </tbody>
         </table>
