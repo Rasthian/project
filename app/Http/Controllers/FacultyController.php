@@ -57,7 +57,7 @@ class FacultyController extends Controller
         }
     }
 
-    public function destroy($id)// DELETE
+    public function destroy($id) // DELETE
     {
         try {
             $faculty = Faculty::find($id);
@@ -66,5 +66,32 @@ class FacultyController extends Controller
         } catch (\Exception $e) {
             return back()->with('error', $e->getMessage());
         }
+    }
+    public function ajaxStore(Request $request)
+    {
+        try {
+            $inputTervalidasi = $request->validate([
+                'name' => 'required|min:3',
+                'date' => 'required'
+            ]);
+
+            DB::table('faculty')->insert($inputTervalidasi);
+
+            return response()->json([
+                'message' => 'success',
+                'data' => $request->all()
+            ]);
+        } catch (\Exception $e) {
+            return back()->with('error', $e->getMessage());
+        }
+    }
+
+    public function ajaxIndex(Request $request)
+    {
+        $faculty = DB::table('faculty')->get();
+        return response()->json([
+            'message' => 'success',
+            'data' => $faculty
+        ]);
     }
 }
